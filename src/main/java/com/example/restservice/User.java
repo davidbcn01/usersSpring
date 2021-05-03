@@ -3,22 +3,40 @@ package com.example.restservice;
 
 import lombok.Data;
 
-@Data
-public class User {
-     private String id,email,password,fullname;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-    public User(String id, String email, String password, String fullname) {
+@Data
+@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @Column(name = "id")
+     private int id;
+    @Column(name = "email")
+     private String email;
+    @Column(name = "password")
+    private String password;
+    @Column(name = "full_name")
+    private String fullname;
+
+    public User(int id, String email, String password, String fullname) {
             this.id = id;
             this.email = email;
             this.password = password;
             this.fullname = fullname;
     }
 
-    public String getId() {
+    public User() {
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

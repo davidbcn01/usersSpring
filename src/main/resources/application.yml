@@ -1,0 +1,6 @@
+spring:
+    datasource:
+        platform: postgres
+        url: jdbc:postgresql://192.168.22.165:5432/cosas
+        username: postgres
+        password: postgres

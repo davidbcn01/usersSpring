@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicLong;
         private List<User> users() {
             return userController.readAll();
         }
+        /*
         @GetMapping("{id}")
         private User user(@PathVariable String id){
             return userController.getUserById(id);
@@ -37,5 +38,7 @@ import java.util.concurrent.atomic.AtomicLong;
             userController.addUder(user);
 
         }
+
+         */
     }
 

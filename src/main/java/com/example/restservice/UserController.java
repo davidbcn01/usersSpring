@@ -10,9 +10,15 @@ import java.util.stream.Collectors;
 @Controller
 public class UserController {
 
-    List<User> userRepository;
-
+    UserDAO userDAO;
     @Autowired
+    public UserController(UserDAO userDao){
+        this.userDAO = userDao;
+    }
+    public List<User> readAll() {
+         return this.userDAO.findAll();
+    }
+    /*@Autowired
     public UserController(List<User> userRepository) {
         this.userRepository = userRepository;
     }
@@ -31,4 +37,6 @@ public class UserController {
     public void addUder(User user) {
         userRepository.add(user);
     }
+    */
+
 }
