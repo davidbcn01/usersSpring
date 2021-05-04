@@ -31,6 +31,13 @@ public class User {
 
     public User() {
     }
+    public User(UserDto userDto) {
+        this.id = userDto.getId();
+        this.email = userDto.getEmail();
+        this.password = userDto.getPassword();
+        this.fullname = userDto.getFullname();
+    }
+
 
     public int getId() {
         return id;

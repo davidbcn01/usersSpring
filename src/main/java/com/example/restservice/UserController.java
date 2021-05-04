@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -15,8 +16,42 @@ public class UserController {
     public UserController(UserDAO userDao){
         this.userDAO = userDao;
     }
-    public List<User> readAll() {
-         return this.userDAO.findAll();
+    public List<UserDto> readAll() {
+
+        List<UserDto> users = userDAO.findAll().stream().map(UserDto::new).collect(Collectors.toList());
+        return users;
+    }
+
+    public UserDto getUserById(Integer id) {
+        Optional<User> user =userDAO.findById(id);
+        if(user.isPresent()){
+            return new UserDto(user.get());
+        }else{
+            return null;
+        }
+    }
+    public UserDto addUder(UserDto userDto) {
+        User user = new User(userDto);
+        userDAO.save(user);
+        return userDto;
+    }
+    public void deleteUser(Integer id) {
+      userDAO.deleteById(id);
+
+    }
+
+    public UserDto updateUser(UserDto userDto, Integer id) {
+        User user = new User(userDto);
+        return userDAO.findById(id).map(u ->{
+            u.setEmail(user.getEmail());
+            u.setPassword(user.getPassword());
+            u.setFullname(user.getFullname());
+            userDAO.save(u);
+            return new UserDto(u);
+        }).orElseGet(()->{
+            UserDto userDto1 = new UserDto(userDAO.save(user));
+            return userDto1;
+        });
     }
     /*@Autowired
     public UserController(List<User> userRepository) {

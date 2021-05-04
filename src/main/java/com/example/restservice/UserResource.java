@@ -21,24 +21,32 @@ import java.util.concurrent.atomic.AtomicLong;
         }
 
         @GetMapping
-        private List<User> users() {
+        private List<UserDto> users() {
             return userController.readAll();
         }
-        /*
+
         @GetMapping("{id}")
-        private User user(@PathVariable String id){
+        private UserDto user(@PathVariable Integer id){
             return userController.getUserById(id);
         }
         @GetMapping("{id}/email")
-        private Map<String,String> email(@PathVariable String id){
+        private Map<String,String> email(@PathVariable Integer id){
             return Collections.singletonMap("email",userController.getUserById(id).getEmail());
         }
-        @PostMapping
-        private void addUser(@RequestBody User user){
-            userController.addUder(user);
 
+        @PostMapping
+        private UserDto addUser(@RequestBody UserDto userDto){
+           return userController.addUder(userDto);
+        }
+        @DeleteMapping("/{id}")
+        private void userDto(@PathVariable Integer id){
+            userController.deleteUser(id);
+        }
+        @PutMapping("/{id}")
+        private UserDto replaceUser(@RequestBody UserDto userDto, @PathVariable Integer id){
+            return userController.updateUser(userDto,id);
         }
 
-         */
+
     }
 
