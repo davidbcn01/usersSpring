@@ -1,6 +1,8 @@
 package com.example.restservice;
 
+import com.github.fge.jsonpatch.JsonPatch;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -45,6 +47,11 @@ import java.util.concurrent.atomic.AtomicLong;
         @PutMapping("/{id}")
         private UserDto replaceUser(@RequestBody UserDto userDto, @PathVariable Integer id){
             return userController.updateUser(userDto,id);
+        }
+
+        @PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
+        public ResponseEntity<UserDto> updateCustomer(@PathVariable Integer id, @RequestBody JsonPatch patch) {
+            return userController.patchUser(id,patch);
         }
 
 

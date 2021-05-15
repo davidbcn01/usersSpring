@@ -1,6 +1,13 @@
 package com.example.restservice;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
@@ -52,6 +59,24 @@ public class UserController {
             UserDto userDto1 = new UserDto(userDAO.save(user));
             return userDto1;
         });
+    }
+
+    public ResponseEntity<UserDto> patchUser(Integer id, JsonPatch patch) {
+
+        try {
+            UserDto user = getUserById(id);
+            UserDto userPatched = applyPatchToUser(patch, user);
+            userDAO.save(new User(userPatched));
+            return ResponseEntity.ok(userPatched);
+        } catch (JsonPatchException | JsonProcessingException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    ObjectMapper objectMapper = new ObjectMapper();
+    public UserDto applyPatchToUser(JsonPatch patch, UserDto userDto) throws JsonPatchException, JsonProcessingException {
+        JsonNode patched = patch.apply(objectMapper.convertValue(userDto, JsonNode.class));
+        return objectMapper.treeToValue(patched, UserDto.class);
     }
     /*@Autowired
     public UserController(List<User> userRepository) {
